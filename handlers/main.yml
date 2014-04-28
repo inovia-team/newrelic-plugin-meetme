@@ -1,0 +1,4 @@
+---
+# handlers file for newrelic-plugin-meetme
+- name: restart {{ newrelic_plugin_daemon_name }}
+  service: name={{ newrelic_plugin_daemon_name }} state=restarted

@@ -1,0 +1,41 @@
+---
+# defaults file for newrelic-plugin-meetme
+
+newrelic_plugin_agent_version: latest
+
+newrelic_plugin_poll_interval: 60
+#newrelic_plugin_api_timeout: 10
+
+
+newrelic_plugin_user: newrelic
+
+newrelic_plugin_config_location: /etc/newrelic
+newrelic_plugin_config_name: newrelic_plugin_agent.cfg
+newrelic_plugin_daemon_location: /usr/local/bin
+newrelic_plugin_daemon_name: newrelic_plugin_agent
+
+newrelic_plugin_log_location: /var/log/newrelic
+newrelic_plugin_log_name: newrelic_plugin_agent.log
+newrelic_plugin_log_format: '%(levelname) -10s %(asctime)s %(process)-6d %(processName) -15s %(threadName)-10s %(name) -25s %(funcName) -25s L%(lineno)-6d: %(message)s'
+newrelic_plugin_log_maxbytes: 10485760
+newrelic_plugin_log_backupcount: 3
+newrelic_plugin_log_level: INFO
+newrelic_plugin_log_propagate: True
+
+newrelic_plugin_pid_location: /var/run/newrelic
+newrelic_plugin_pid_name: newrelic_plugin_agent.pid
+
+newrelic_plugin_apache: False
+newrelic_plugin_couchdb: False
+newrelic_plugin_elasticsearch: False
+newrelic_plugin_haproxy: False
+newrelic_plugin_mongodb: False
+newrelic_plugin_memcached: False
+newrelic_plugin_nginx: False
+newrelic_plugin_pgbouncer: False
+newrelic_plugin_php_apc: False
+newrelic_plugin_php_fpm: False
+newrelic_plugin_postgresql: False
+newrelic_plugin_rabbitmq: False
+newrelic_plugin_redis: False
+newrelic_plugin_riak: False

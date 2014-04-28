@@ -1,0 +1,9 @@
+---
+- name: Updating apt
+  command: 'apt-get update'
+
+- name: Ensuring python-apt is installed
+  command: 'apt-get -y install python-apt'
+
+- name: python-pip installed
+  apt: pkg=python-pip update_cache=yes state=installed
