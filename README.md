@@ -1,7 +1,26 @@
-newrelic_plugin_meetme
+newrelic-plugin-meetme
 ========
 
 This role is responsible for installing the [newrelic-plugin-agent](https://github.com/MeetMe/newrelic-plugin-agent)
+
+It will be capable of monitoring the following services:
+
+- Alternative PHP Cache
+- Apache HTTP Server
+- CouchDB
+- Elasticsearch
+- HAProxy
+- Memcached
+- MongoDB
+- Nginx
+- pgBouncer
+- PHP FPM
+- PostgreSQL
+- RabbitMQ
+- Redis
+- Riak
+- uWSGI
+
 
 Requirements
 ------------
@@ -101,4 +120,13 @@ BSD
 Author Information
 ------------------
 
-Bruce Stringer
+Bruce Stringer <bruce.stringer@rackspace.com>
+
+Additional Information
+----------------------
+
+This role is not yet production ready.
+
+
+[Rackspace - the open cloud company](http://rackspace.com)
+Ask about our DevOps Automation Service - [www.rackspace.com/devops](http://rackspace.com/devops)

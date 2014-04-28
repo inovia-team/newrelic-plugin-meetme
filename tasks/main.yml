@@ -23,7 +23,7 @@
   pip: name=newrelic-plugin-agent version={{ newrelic_plugin_agent_version }}
   when: newrelic_plugin_agent_version != 'latest'
 
-- name: Install per agent requirements
+- name: Include per agent requirements
   include: install_agent_per_service_requirements.yml
 
 - name: Add newrelic plugin user
