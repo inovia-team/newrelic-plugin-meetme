@@ -7,10 +7,12 @@
     msg: "newrelic_license_key has not been defined"
   when: newrelic_license_key|default(False) == False
 
-- include: RedHat-system-packages.yml
+- name: Include RedHat specific packages
+  include: RedHat-system-packages.yml
   when: ansible_os_family == 'RedHat'
 
-- include: Debian-system-packages.yml
+- name: Include Debian specific packages
+  include: Debian-system-packages.yml
   when: ansible_os_family == 'Debian'
 
 - name: Install latest newrelic-plugin-agent
@@ -24,24 +26,24 @@
 - name: Install per agent requirements
   include: install_agent_per_service_requirements.yml
 
-- name: Adding {{ newrelic_plugin_user }} user
+- name: Add newrelic plugin user
   user: name={{ newrelic_plugin_user }} comment='Newrelic_plugin_agent user' state=present
 
-- name: 'Creating log directory: {{ newrelic_plugin_log_location }}'
+- name: Create log directory
   file: path={{ newrelic_plugin_log_location }} state=directory owner={{ newrelic_plugin_user }} mode=755
 
-- name: 'Creating pid directory: {{ newrelic_plugin_pid_location }}'
+- name: Create pid directory
   file: path={{ newrelic_plugin_pid_location }} state=directory owner={{ newrelic_plugin_user }} mode=755
 
-- name: 'Create config directory: {{ newrelic_plugin_config_location }}'
+- name: Create config directory
   file: path={{ newrelic_plugin_config_location }} state=directory owner={{ newrelic_plugin_user }} mode=755
 
-- name: Templating {{ newrelic_plugin_config_location  }}/{{ newrelic_plugin_config_name }}
+- name: Template newrelic plugin config file
   template: dest={{ newrelic_plugin_config_location }}/{{ newrelic_plugin_config_name }} src=newrelic_plugin_agent.cfg.j2 owner={{ newrelic_plugin_user }} mode=600
 
 - name: Install init script into init.d
   template: dest=/etc/init.d/newrelic_plugin_agent src=newrelic_plugin_agent.{{ ansible_os_family }}.startup.j2 owner=root group=root mode=0750
   notify: restart {{ newrelic_plugin_daemon_name  }}
 
-- name: Enable and start {{ newrelic_plugin_daemon_name }}
+- name: Enable and start newrelic plugin service
   service: name={{ newrelic_plugin_daemon_name }} state=started enabled=True
