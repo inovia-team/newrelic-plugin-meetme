@@ -3,6 +3,8 @@ newrelic-plugin-meetme
 
 This role is responsible for installing the [newrelic-plugin-agent](https://github.com/MeetMe/newrelic-plugin-agent)
 
+[![Build Status](http://drone.onitato.com/github.com/rack-roles/newrelic-plugin-meetme/status.svg?branch=master)](http://drone.onitato.com/github.com/rack-roles/newrelic-plugin-meetme)
+
 It will be capable of monitoring the following services:
 
 - Alternative PHP Cache
