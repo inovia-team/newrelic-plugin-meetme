@@ -127,8 +127,6 @@ Bruce Stringer <bruce.stringer@rackspace.com>
 Additional Information
 ----------------------
 
-This role is not yet production ready.
-
-
 [Rackspace - the open cloud company](http://rackspace.com)
+
 Ask about our DevOps Automation Service - [www.rackspace.com/devops](http://rackspace.com/devops)
