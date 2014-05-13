@@ -3,6 +3,8 @@ newrelic-plugin-meetme
 
 This role is responsible for installing the [newrelic-plugin-agent](https://github.com/MeetMe/newrelic-plugin-agent)
 
+[![Build Status](https://drone-opsdev.rax.io/github.com/rack-roles/newrelic-plugin-meetme/status.svg?branch=master)](https://drone-opsdev.rax.io/github.com/rack-roles/newrelic-plugin-meetme)
+
 It will be capable of monitoring the following services:
 
 - Alternative PHP Cache
@@ -125,8 +127,6 @@ Bruce Stringer <bruce.stringer@rackspace.com>
 Additional Information
 ----------------------
 
-This role is not yet production ready.
-
-
 [Rackspace - the open cloud company](http://rackspace.com)
+
 Ask about our DevOps Automation Service - [www.rackspace.com/devops](http://rackspace.com/devops)
