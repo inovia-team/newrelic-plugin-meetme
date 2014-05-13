@@ -110,7 +110,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: Rackspace_Automation.newrelic_plugin_meetme, newrelic_license_key: YOUR_LICENSE_KEY }
+         - { role: Rackspace_Automation.newrelic-plugin-meetme, newrelic_license_key: YOUR_LICENSE_KEY }
 
 License
 -------

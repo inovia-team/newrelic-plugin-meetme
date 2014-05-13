@@ -57,10 +57,10 @@ Application:
 # Couchdb plugin disabled in ansbile for this node
 {% endif %}
 
-{% if newrelic_plugin_elasticsearch|default(False) != False %}
+{% if elasticsearch_hostname|default(False) != False %}
   elasticsearch:
     name: '{{ elasticsearch_cluster_name }}'
-    host: localhost
+    host: '{{ elasticsearch_hostname }}'
     port: 9200
 {% else %}
 # elasticsearch plugin disabled in ansbile for this node
