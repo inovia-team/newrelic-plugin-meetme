@@ -3,4 +3,4 @@ script:
   - git clone https://github.com/rack-roles/test.ping
   - bash test.ping/lint.sh
   - ansible-galaxy install -r /var/cache/drone/src/github.com/rack-roles/newrelic-plugin-meetme/tests/roles.list
-  - ansible-playbook /var/cache/drone/src/github.com/rack-roles/newrelic-plugin-meetme/tests/main.yml --connection=local
+  - ansible-playbook /var/cache/drone/src/github.com/rack-roles/newrelic-plugin-meetme/tests/main.yml --connection=local --extra-vars="newrelic_license_key={{ newrelic_license_key }}"
