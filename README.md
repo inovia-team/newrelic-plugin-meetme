@@ -32,9 +32,14 @@ Users must have a valid NewRelic account and provide a valid newrelic_license_ke
 Role Variables
 --------------
 
+#### Required Variables
+
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
     newrelic_license_key: DEFINE_WITH_YOUR_OWN_KEY
+
+
+#### Optional Variables
 
 Your NewRelic license key must be set for this role to operate properly.
 
