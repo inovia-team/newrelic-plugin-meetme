@@ -1,3 +1,0 @@
----
-- name: RedHat | python-pip installed
-  yum: name=python-pip state=installed
