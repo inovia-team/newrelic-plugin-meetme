@@ -1,2 +1,2 @@
 ---
-newrelic_plugin_daemon_location: /usr//bin
+newrelic_plugin_daemon_location: /usr/bin
