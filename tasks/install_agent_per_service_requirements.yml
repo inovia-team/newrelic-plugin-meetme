@@ -1,10 +1,7 @@
 ---
 #Installing various system requirements based on the plugins that are enabled
 
-- name: Install mongodb agent requirements
-  pip: name=newrelic_plugin_agent[mongodb]
-  when: newrelic_plugin_mongodb
-
+#Installing system level requirements for pip packages
 - name: Installing psycopg2 requirements -- Debian
   apt: pkg={{ item }} update_cache=True state=latest
   with_items:
@@ -20,7 +17,7 @@
     - python-devel
   when: ansible_os_family == 'RedHat' and (newrelic_plugin_pgbouncer or newrelic_plugin_postgresql)
 
-
+#Installing required pip pacakages
 - name: Install pgbouncer agent requirements
   pip: name=newrelic_plugin_agent[pgbouncer]
   when: newrelic_plugin_pgbouncer
@@ -28,3 +25,7 @@
 - name: Install postgresql agent requirements
   pip: name=newrelic_plugin_agent[postgresql]
   when: newrelic_plugin_postgresql
+
+- name: Install mongodb agent requirements
+  pip: name=newrelic_plugin_agent[mongodb]
+  when: newrelic_plugin_mongodb

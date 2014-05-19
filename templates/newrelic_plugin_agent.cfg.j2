@@ -4,217 +4,244 @@
 #{{ ansible_managed }}
 ###############################################################################
 
+
 Application:
+########## NEW RELIC ##########
   license_key: {{ newrelic_license_key }}
   poll_interval: {{ newrelic_plugin_poll_interval }}
 
-{% if newrelic_plugin_api_timeout|default(False) != False %}
+{% if newrelic_plugin_api_timeout | default(False) != False %}
   newrelic_api_timeout:{{ newrelic_plugin_api_timeout }}
 {% else %}
   #newrelic_api_timeout: 10
-{% endif %}
+{% endif -%}
 
 {% if newrelic_proxy|default(False) != False %}
   newrelic_proxy:{{ newrelic_proxy }}
 {% else %}
   #proxy: http://localhost:8080
-{% endif %}
+{% endif -%}
+########## END NEW RELIC ##########
 
-
-{% if newrelic_plugin_apache|default(False) != False %}
+########## PLUGINS ##########
+{% if newrelic_plugin_apache|default(False) != False and newrelic_plugin_apache is iterable %}
   apache_httpd:
-     -  name: hostname1
-        scheme: http
-        host: localhost
-        port: 80
-        path: /server-status
-        #verify_ssl_cert: true
-     -  name: hostname2
-        scheme: http
-        host: localhost
-        port: 80
-        path: /server-status
-        #verify_ssl_cert: true
+    {% for host in newrelic_plugin_apache %}
+    - name: {{ host.name }}
+      scheme: {{ host.scheme | default('http') }}
+      host: {{ host.host | default('localhost') }}
+      port: {{ host.port | default(80) }}
+      path: {{ host.path | default('/server-status') }}
+      {% if host.verify_ssl_cert is defined %}
+      verify_ssl_cert: {{ host.verify_ssl_cert }}
+      {% endif %}
+    {% endfor %}
+
 {% else %}
 # Apache plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
-{% if newrelic_plugin_couchdb|default(False) != False %}
+{% if newrelic_plugin_couchdb|default(False) != False and newrelic_plugin_couchdb is iterable %}
   couchdb:
-     -  name: localhost
-        host: localhost
-        port: 5984
-        #verify_ssl_cert: true
-        #username: foo
-        #password: bar
-     -  name: localhost
-        host: localhost
-        port: 5984
-        #verify_ssl_cert: true
-        #username: foo
-        #password: bar
+    {% for host in newrelic_plugin_couchdb %}
+    - name: {{ host.name | default('localhost') }}
+      host: {{ host.host | default('localhost') }}
+      port: {{ host.port | default(5984) }}
+      {% if host.verify_ssl_cert is defined%}
+      verify_ssl_cert: {{ host.verify_ssl_cert }}
+      {% endif %}
+      {% if host.username is defined %}
+      username: {{ host.username }}
+      {% endif %}
+      {% if host.password is defined%}
+      password: {{ host.password }}
+      {% endif %}
+    {% endfor %}
 {% else %}
 # Couchdb plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
-{% if elasticsearch_hostname|default(False) != False %}
+{% if newrelic_plugin_elasticsearch|default(False) != False %}
   elasticsearch:
-    name: '{{ elasticsearch_cluster_name }}'
-    host: '{{ elasticsearch_hostname }}'
-    port: 9200
+    name: {{ newrelic_plugin_elasticsearch.name }}
+    host: {{ newrelic_plugin_elasticsearch.host | default('localhost') }}
+    port: {{ newrelic_plugin_elasticsearch.port | default(9200) }}
 {% else %}
 # elasticsearch plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
 {% if newrelic_plugin_haproxy|default(False) != False %}
   haproxy:
-    name: my-haproxy-server
-    host: localhost
-    port: 80
-    path: /haproxy?stats;csv
-    scheme: http
-    #verify_ssl_cert: true
-    #username: foo
-    #password: bar
+    name: {{ newrelic_plugin_haproxy.name | default('my-haproxy-server') }}
+    host: {{ newrelic_plugin_haproxy.host | default('localhost') }}
+    port: {{ newrelic_plugin_haproxy.port | default(80) }}
+    path: {{ newrelic_plugin_haproxy.path | default('/haproxy?stats;csv') }}
+    scheme: {{ newrelic_plugin_haproxy.scheme | default('http') }}
+    {% if newrelic_plugin_haproxy.verify_ssl_cert is defined %}
+    verify_ssl_cert: {{ newrelic_plugin_haproxy.verify_ssl_cert }}
+    {% endif %}
+    {% if newrelic_plugin_haproxy.username is defined %}
+    username: {{ newrelic_plugin_haproxy.username }}
+    {% endif %}
+    {% if newrelic_plugin_haproxy.password is defined %}
+    password: {{ newrelic_plugin_haproxy.password }}
+    {% endif %}
 {% else %}
 # haproxy plugin disabled in ansbile for this node
-{% endif %}
-
+{% endif -%}
 
 {% if newrelic_plugin_mongodb|default(False) != False %}
   mongodb:
-    name: hostname
-    host: localhost
-    port: 27017
-    admin_username: foo
-    admin_password: bar
+    name: {{ newrelic_plugin_mongodb.name | default('localhost') }}
+    host: {{ newrelic_plugin_mongodb.host | default('localhost') }}
+    port: {{ newrelic_plugin_mongodb.port | default(27017) }}
+    admin_username: {{ newrelic_plugin_mongodb.admin_username | default('foo') }}
+    admin_password: {{ newrelic_plugin_mongodb.admin_password | default('bar') }}
+    {% if newrelic_plugin_mongodb.databases is defined and newrelic_plugin_mongodb.databases is iterable%}
     databases:
-      database_name_1:
-        username: foo
-        password: bar
-      database_name_2:
-        username: foo
-        password: bar
+      {% for database in newrelic_plugin_mongodb.databases %}
+      {{ database.name }}:
+        username: {{ database.username | default('foo') }}
+        password: {{ database.password | default('bar') }}
+      {% endfor %}
+    {% endif %}
 {% else %}
 # mongodb plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
-{% if newrelic_plugin_memcached|default(False) != False %}
+{% if newrelic_plugin_memcached|default(False) != False and newrelic_plugin_memcached is iterable %}
   memcached:
-    - name: localhost
-      host: localhost
-      port: 11211
-      path: /path/to/unix/socket
-    - name: localhost
-      host: localhost
-      port: 11211
-      path: /path/to/unix/socket
+    {% for host in newrelic_plugin_memcached %}
+    - name: {{ host.name | default('localhost') }}
+      host: {{ host.host | default('localhost') }}
+      port: {{ host.port | default(11211) }}
+      path: {{ host.path | mandatory }}
+    {% endfor %}
 {% else %}
 # memcached plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
-{% if newrelic_plugin_nginx|default(False) != False %}
+{% if newrelic_plugin_nginx|default(False) != False and newrelic_plugin_nginx is iterable %}
   nginx:
-    - name: hostname
-      host: localhost
-      port: 80
-      path: /nginx_stub_status
-      #verify_ssl_cert: true
-    - name: hostname
-      host: localhost
-      port: 80
-      path: /nginx_stub_status
-      #verify_ssl_cert: true
+    {% for host in newrelic_plugin_nginx %}
+    - name: {{ host.name | default('localhost') }}
+      host: {{ host.host | default('localhost') }}
+      port: {{ host.port | default(80) }}
+      path: {{ host.path | default('/nginx_stub_status') }}
+      {% if host.verify_ssl_cert is defined %}
+      verify_ssl_cert: {{ host.verify_ssl_cert }}
+      {% endif %}
+    {% endfor %}
 {% else %}
 # nginx plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
-{% if newrelic_plugin_pgbouncer|default(False) != False %}
+{% if newrelic_plugin_pgbouncer|default(False) != False and newrelic_plugin_pgbouncer is iterable %}
   pgbouncer:
-    - host: localhost
-      port: 6000
-      user: stats
+    {% for host in newrelic_plugin_pgbouncer %}
+    - host: {{ host.host | default('localhost') }}
+      port: {{ host.port | default(6000) }}
+      user: {{ host.user | default('stats') }}
+    {% endfor %}
 {% else %}
 # pgbouncer plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
 {% if newrelic_plugin_php_apc|default(False) != False %}
   php_apc:
-     scheme: http
-     host: localhost
-     port: 80
-     path: /apc-nrp.php
-     #username: foo
-     #password: bar
-     #verify_ssl_cert: t
+    scheme: {{ newrelic_plugin_php_apc.scheme | default('http') }}
+    host: {{ newrelic_plugin_php_apc.host | default('localhost') }}
+    port: {{ newrelic_plugin_php_apc.port | default(80) }}
+    path: {{ newrelic_plugin_php_apc.path | default('/apc-nrp.php') }}
+    {% if newrelic_plugin_php_apc.verify_ssl_cert is defined%}
+    verify_ssl_cert: {{ newrelic_plugin_php_apc.verify_ssl_cert }}
+    {% endif %}
+    {% if newrelic_plugin_php_apc.username is defined %}
+    username: {{ newrelic_plugin_php_apc.username }}
+    {% endif %}
+    {% if newrelic_plugin_php_apc.password is defined %}
+    password: {{ newrelic_plugin_php_apc.password }}
+    {% endif %}
 {% else %}
 # php_apc plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
-{% if newrelic_plugin_php_fpm|default(False) != False %}
+{% if newrelic_plugin_php_fpm|default(False) != False and newrelic_plugin_php_fpm is iterable %}
   php_fpm:
-    - name: fpm-pool
-      scheme: https
-      host: localhost
-      port: 443
-      path: /fpm_status
-      query: json
+    {% for host in newrelic_plugin_php_fpm %}
+    - name: {{ host.name | default('fpm-pool') }}
+      scheme: {{ host.scheme | default('https') }}
+      host: {{ host.host | default('localhost') }}
+      port: {{ host.port | default(443) }}
+      path: {{ host.path | default('/fpm_status') }}
+      query: {{ host.quert | default('json') }}
+    {% endfor %}
 {% else %}
 # php_fpm plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
-{% if newrelic_plugin_postgresql|default(False) != False %}
+{% if newrelic_plugin_postgresql|default(False) != False and newrelic_plugin_postgresql is iterable %}
   postgresql:
-    - host: localhost
-      port: 5432
-      user: postgres
-      dbname: postgres
-      superuser: True
+    {% for host in newrelic_plugin_postgresql %}
+    - host: {{ host.host | default('localhost') }}
+      port: {{ host.port | default(5432) }}
+      user: {{ host.user | default('postgres') }}
+      dbname: {{ host.dbname | default('postgres') }}
+      superuser: {{ host.superuser | default('True') }}
+    {% endfor %}
 {% else %}
 # postgresql plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
-{% if newrelic_plugin_rabbitmq|default(False) != False %}
+{% if newrelic_plugin_rabbitmq|default(False) != False and newrelic_plugin_rabbitmq is iterable%}
   rabbitmq:
-    - name: rabbitmq@localhost
-      host: localhost
-      port: 15672
-      username: guest
-      password: guest
-      #verify_ssl_cert: true
-      api_path: /api
+    {%  for host in newrelic_plugin_rabbitmq %}
+    - name: {{ host.name | default('rabbitmq@localhost') }}
+      host: {{ host.host | default('localhost') }}
+      port: {{ host.port | default(15672) }}
+      username: {{ host.username | default('guest')}}
+      password: {{ host.password | default('guest')}}
+      {% if host.verify_ssl_cert is defined%}
+      verify_ssl_cert: {{ host.verify_ssl_cert }}
+      {% endif %}
+      api_path: {{ host.api_path | default('/api') }}
+    {% endfor %}
 {% else %}
 # rabbitmq plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
-{% if newrelic_plugin_redis|default(False) != False %}
+{% if newrelic_plugin_redis|default(False) != False and newrelic_plugin_redis is iterable%}
   redis:
-    - name: localhost
-      host: localhost
-      port: 6379
-      db_count: 16
-      password: foobar
-      #path: /var/run/redis/redis.sock
-    - name: localhost
-      host: localhost
-      port: 6380
-      db_count: 16
-      password: foobar
-      #path: /var/run/redis/redis.sock
+    {% for host in newrelic_plugin_redis %}
+    - name: {{ host.name | default('localhost') }}
+      host: {{ host.host | default('localhost') }}
+      port: {{ host.port | default(6379) }}
+      db_count: {{ host.db_count | default(16) }}
+      password: {{ host.password | default('foobar') }}
+      {% if host.path is defined %}
+      path: {{ host.path | default('/var/run/redis/redis.sock') }}
+      {% endif %}
+    {% endfor %}
 {% else %}
 # redis plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
 
-{% if newrelic_plugin_riak|default(False) != False %}
+{% if newrelic_plugin_riak|default(False) != False and newrelic_plugin_riak  is iterable%}
   riak:
-    - name: localhost
-      host: localhost
-      port: 8098
-      #verify_ssl_cert: true
+    {% for host in newrelic_plugin_riak %}
+    - name: {{ host.name | default('localhost') }}
+      host: {{ host.host | default('localhost') }}
+      port: {{ host.port | default(8098) }}
+      {% if host.verify_ssl_cert is defined%}
+      verify_ssl_cert: {{ host.verify_ssl_cert }}
+      {% endif %}
+    {% endfor %}
 {% else %}
 # riak plugin disabled in ansbile for this node
-{% endif %}
+{% endif -%}
+##########  END PLUGINS ##########
 
+########### LOGGING ##########
 Daemon:
   user: {{ newrelic_plugin_user }}
   pidfile: {{ newrelic_plugin_pid_location }}/{{ newrelic_plugin_pid_name }}
@@ -239,3 +266,4 @@ Logging:
       level: ERROR
       propagate: True
       handlers: [console, file]
+########### END LOGGING ##########

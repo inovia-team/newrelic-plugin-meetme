@@ -1,18 +1,20 @@
 ---
-- name: Add OS specific variables
-  include_vars: '{{ ansible_os_family }}.yml'
 
+# Checking for required vars before doing anything else
 - name: Check that newrelic_license_key is set
   fail:
     msg: "newrelic_license_key has not been defined"
-  when: newrelic_license_key|default(False) == False
+  when: newrelic_license_key is not defined
 
-- name: Include RedHat specific packages
-  include: RedHat-system-packages.yml
+- name: Add OS specific variables
+  include_vars: '{{ ansible_os_family }}.yml'
+
+- name: RedHat | python-pip installed
+  yum: name=python-pip state=installed
   when: ansible_os_family == 'RedHat'
 
-- name: Include Debian specific packages
-  include: Debian-system-packages.yml
+- name: Debian | python-pip installed
+  apt: pkg=python-pip update_cache=yes state=installed
   when: ansible_os_family == 'Debian'
 
 - name: Install latest newrelic-plugin-agent
@@ -38,8 +40,6 @@
 - name: Create config directory
   file: path={{ newrelic_plugin_config_location }} state=directory owner={{ newrelic_plugin_user }} mode=755
 
-- debug: var=ansbile_local
-
 - name: Template newrelic plugin config file
   template: dest={{ newrelic_plugin_config_location }}/{{ newrelic_plugin_config_name }} src=newrelic_plugin_agent.cfg.j2 owner={{ newrelic_plugin_user }} mode=600
 
@@ -48,6 +48,4 @@
   notify: restart newrelic_plugin
 
 - name: Enable and start newrelic plugin service
-  service: name={{ newrelic_plugin_daemon_name }} state=started enabled=True
-
-- debug: var=hostvars[inventory_hostname].ansible_local.elasticsearch
+  service: name={{ newrelic_plugin_service_name }} state=started enabled=True

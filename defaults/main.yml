@@ -6,13 +6,13 @@ newrelic_plugin_agent_version: latest
 newrelic_plugin_poll_interval: 60
 #newrelic_plugin_api_timeout: 10
 
-
 newrelic_plugin_user: newrelic
 
 newrelic_plugin_config_location: /etc/newrelic
 newrelic_plugin_config_name: newrelic_plugin_agent.cfg
 newrelic_plugin_daemon_location: /usr/local/bin
 newrelic_plugin_daemon_name: newrelic_plugin_agent
+newrelic_plugin_service_name : '{{ newrelic_plugin_daemon_name }}'
 
 newrelic_plugin_log_location: /var/log/newrelic
 newrelic_plugin_log_name: newrelic_plugin_agent.log
