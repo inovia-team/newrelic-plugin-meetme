@@ -115,7 +115,7 @@ Application:
     - name: {{ host.name | default('localhost') }}
       host: {{ host.host | default('localhost') }}
       port: {{ host.port | default(11211) }}
-      path: {{ host.path | mandatory }}
+      path: {{ host.path }}
     {% endfor %}
 {% else %}
 # memcached plugin disabled in ansbile for this node
