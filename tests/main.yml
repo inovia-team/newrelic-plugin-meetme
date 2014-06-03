@@ -1,5 +1,6 @@
 ---
 - hosts: localhost
+  connection: local
   vars:
     newrelic_plugin_daemon_name: newrelic-plugin-agent
     newrelic_plugin_service_name : newrelic_plugin_agent
