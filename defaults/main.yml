@@ -11,8 +11,8 @@ newrelic_plugin_user: newrelic
 newrelic_plugin_config_location: /etc/newrelic
 newrelic_plugin_config_name: newrelic_plugin_agent.cfg
 newrelic_plugin_daemon_location: /usr/local/bin
-newrelic_plugin_daemon_name: newrelic_plugin_agent
-newrelic_plugin_service_name : '{{ newrelic_plugin_daemon_name }}'
+newrelic_plugin_daemon_name: newrelic-plugin-agent
+newrelic_plugin_service_name : newrelic_plugin_agent
 
 newrelic_plugin_log_location: /var/log/newrelic
 newrelic_plugin_log_name: newrelic_plugin_agent.log
@@ -39,3 +39,14 @@ newrelic_plugin_postgresql: False
 newrelic_plugin_rabbitmq: False
 newrelic_plugin_redis: False
 newrelic_plugin_riak: False
+
+newrelic_plugin_packages:
+  - gcc
+  - pytho-pip
+  - swig
+
+newrelic_plugin_pip_updates:
+  - pip
+  - simplejson
+  - setuptools
+  - distribute

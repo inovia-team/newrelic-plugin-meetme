@@ -10,12 +10,26 @@
   include_vars: '{{ ansible_os_family }}.yml'
 
 - name: RedHat | python-pip installed
-  yum: name=python-pip state=installed
+  yum: name={{ item }} state=installed
   when: ansible_os_family == 'RedHat'
+  with_items:
+    - python-pip
+#    - python-devel
+#    - gcc
+#    - swig
 
 - name: Debian | python-pip installed
-  apt: pkg=python-pip update_cache=yes state=installed
+  apt: pkg={{ item }} update_cache=yes state=installed
   when: ansible_os_family == 'Debian'
+  with_items:
+    - python-pip
+ #   - swig
+ #   - python-dev
+ #   - gcc
+
+- name: Update pip
+  pip: name={{ item }} state=latest
+  with_items: newrelic_plugin_pip_updates
 
 - name: Install latest newrelic-plugin-agent
   pip: name=newrelic-plugin-agent state=latest
