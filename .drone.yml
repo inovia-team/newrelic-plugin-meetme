@@ -6,4 +6,4 @@ script:
   - ansible-playbook --syntax-check $DRONE_BUILD_DIR/tests/main.yml
   - ansible-playbook $DRONE_BUILD_DIR/tests/main.yml --extra-vars "newrelic_license_key=$NEWRELIC_LICENSE_KEY"
   - ansible-playbook $DRONE_BUILD_DIR/tests/main.yml --extra-vars "newrelic_license_key=$NEWRELIC_LICENSE_KEY"
-  - "ansible-playbook $DRONE_BUILD_DIR/tests/main.yml --extra-vars 'newrelic_license_key=$NEWRELIC_LICENSE_KEY' | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)"
+  - "ansible-playbook $DRONE_BUILD_DIR/tests/main.yml --extra-vars \"newrelic_license_key=$NEWRELIC_LICENSE_KEY\" | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)"
