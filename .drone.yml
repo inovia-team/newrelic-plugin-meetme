@@ -1,6 +1,6 @@
 image: linuturk/ubuntu-ansible
 env:
-  - NEWRELIC_LICENSE_KEY={{ newrelic_license_key }}
+  - NEWRELIC_LICENSE_KEY={{newrelic_license_key}}
 script:
   - ansible-galaxy install -r $DRONE_BUILD_DIR/tests/roles.list
   - ansible-playbook --syntax-check $DRONE_BUILD_DIR/tests/main.yml
