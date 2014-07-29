@@ -113,9 +113,12 @@ Application:
   memcached:
 {% for host in newrelic_plugin_memcached %}
     - name: {{ host.name | default('localhost') }}
+{% if host.path is not defined %}
       host: {{ host.host | default('localhost') }}
       port: {{ host.port | default(11211) }}
+{% else %}
       path: {{ host.path }}
+{% endif -%}
 {% endfor %}
 {% else %}
 # memcached plugin disabled in ansbile for this node
