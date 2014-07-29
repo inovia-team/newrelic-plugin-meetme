@@ -14,18 +14,14 @@
   when: ansible_os_family == 'RedHat'
   with_items:
     - python-pip
-#    - python-devel
-#    - gcc
-#    - swig
+    - python-devel
 
 - name: Debian | python-pip installed
   apt: pkg={{ item }} update_cache=yes state=installed
   when: ansible_os_family == 'Debian'
   with_items:
     - python-pip
- #   - swig
- #   - python-dev
- #   - gcc
+    - python-dev
 
 - name: Update pip
   pip: name={{ item }} state=latest

@@ -42,7 +42,7 @@ newrelic_plugin_riak: False
 
 newrelic_plugin_packages:
   - gcc
-  - pytho-pip
+  - python-pip
   - swig
 
 newrelic_plugin_pip_updates:
