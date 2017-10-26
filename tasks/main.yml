@@ -25,7 +25,7 @@
 
 - name: Update pip
   pip: name={{ item }} state=latest
-  with_items: newrelic_plugin_pip_updates
+  with_items: "{{ newrelic_plugin_pip_updates }}"
 
 - name: Install latest newrelic-plugin-agent
   pip: name=newrelic-plugin-agent state=latest
